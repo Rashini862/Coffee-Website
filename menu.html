@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAVORIA - Menu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background-color: #1a1a1a;
+            color: #fff;
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 3rem;
+            background-color: #0d0d0d;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            background-color: rgba(13, 13, 13, 0.95);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            padding: 1rem 3rem;
+        }
+
+        /* Add padding to body to account for fixed nav */
+        body {
+            padding-top: 80px;
+        }
+
+        .logo {
+            font-family: 'Didot', 'Bodoni MT', serif;
+            font-size: 1.5rem;
+            letter-spacing: 3px;
+            color: #d4af7a;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #d4af7a;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-icons button {
+            background: none;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .login-btn {
+            background-color: #d4af7a;
+            color: #000;
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .login-btn:hover {
+            background-color: #c49a5f;
+        }
+
+        /* Menu Page Styles */
+        .menu-hero {
+            padding: 4rem 3rem;
+            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
+                        url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=1200&h=600&fit=crop');
+            background-size: cover;
+            background-position: center;
+            text-align: center;
+        }
+
+        .menu-hero h1 {
+            font-size: 3.5rem;
+            color: #d4af7a;
+            margin-bottom: 1rem;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        .menu-hero p {
+            font-size: 1.2rem;
+            color: #b8b8b8;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .menu-categories {
+            padding: 4rem 3rem;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+        }
+
+        .section-line {
+            width: 60px;
+            height: 2px;
+            background-color: #d4af7a;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: #d4af7a;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .category-card {
+            background-color: #0d0d0d;
+            border: 1px solid #333;
+            border-radius: 15px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .category-card:hover {
+            border-color: #d4af7a;
+            transform: translateY(-5px);
+        }
+
+        .category-title {
+            color: #d4af7a;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #333;
+        }
+
+        .menu-items {
+            list-style: none;
+        }
+
+        .menu-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid #333;
+        }
+
+        .menu-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-info {
+            flex: 1;
+        }
+
+        .item-name {
+            color: #fff;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .item-description {
+            color: #888;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+
+        .item-price {
+            color: #d4af7a;
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-left: 1rem;
+        }
+
+        .menu-note {
+            text-align: center;
+            color: #888;
+            font-style: italic;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #333;
+        }
+
+        /* Footer Section */
+        footer {
+            background-color: #000;
+            padding: 4rem 3rem 2rem;
+            border-top: 1px solid #222;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            gap: 4rem;
+            margin-bottom: 3rem;
+            padding-bottom: 3rem;
+            border-bottom: 1px solid #222;
+        }
+
+        .footer-column {
+            flex: 1;
+        }
+
+        .footer-title {
+            color: #d4af7a;
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: #888;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #d4af7a;
+        }
+
+        .newsletter-text {
+            color: #888;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 0;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 0.9rem 1.2rem;
+            background-color: transparent;
+            border: 1px solid #333;
+            border-radius: 5px 0 0 5px;
+            color: #fff;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .newsletter-input:focus {
+            border-color: #d4af7a;
+        }
+
+        .newsletter-input::placeholder {
+            color: #555;
+        }
+
+        .newsletter-btn {
+            padding: 0.9rem 1.5rem;
+            background-color: #d4af7a;
+            border: 1px solid #d4af7a;
+            border-radius: 0 5px 5px 0;
+            color: #000;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .newsletter-btn:hover {
+            background-color: #c49a5f;
+            border-color: #c49a5f;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #666;
+            font-size: 0.85rem;
+        }
+
+        .footer-left {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-icon {
+            color: #666;
+            font-size: 1.2rem;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .social-icon:hover {
+            color: #d4af7a;
+        }
+
+        .footer-copyright {
+            color: #666;
+        }
+
+        .footer-designed {
+            color: #666;
+        }
+
+        .footer-designed a {
+            color: #d4af7a;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-designed a:hover {
+            color: #c49a5f;
+        }
+
+        @media (max-width: 768px) {
+            .menu-hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                gap: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">SAVORIA</div>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="menu.html" class="active">Menu</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#blog">Blog</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="nav-icons">
+            <button>🔍</button>
+            <button>🛒</button>
+            <button class="login-btn">Log in/Sign up</button>
+        </div>
+    </nav>
+
+    <!-- Menu Hero Section -->
+    <section class="menu-hero">
+        <h1>Our Coffee Menu</h1>
+        <p>Discover our carefully crafted selection of artisan coffees, each telling a unique story of flavor and tradition.</p>
+    </section>
+
+    <!-- Coffee Menu Section -->
+    <section class="menu-categories">
+        <div class="section-header">
+            <div class="section-line"></div>
+            <h2 class="section-title">Coffee Selection</h2>
+        </div>
+
+        <div class="category-grid">
+            <!-- European Heritage -->
+            <div class="category-card">
+                <h3 class="category-title">European Heritage</h3>
+                <ul class="menu-items">
+                    <li class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Espresso Classico</div>
+                            <div class="item-description">Traditional Italian espresso with rich crema and bold flavor</div>
+                        </div>
+                        <div class="item-price">$4.50</div>
+                    </li>
+                    <li class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">French Press</div>
+                            <div class="item-description">Full-bodied coffee with rich oils and deep flavor profile</div>
+                        </div>
+                        <div class="item-price">$5.00</div>
+                    </li>
+                    <li class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Vienna Mélange</div>
+                            <div class="item-description">Austrian-style coffee with steamed milk and whipped cream</div>
+                        </div>
+                        <div class="item-price">$5.75</div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Latin Legacy -->
+            <div class="category-card">
+                <h3 class="category-title">Latin Legacy</h3>
+                <ul class="menu-items">
+                    <li class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Brazilian Dark Roast</div>
+                            <div class="item-description">Bold and chocolatey with notes of nuts and caramel</div>
+                        </div>
+                        <div class="item-price">$4.75</div>
+                    </li>
+                    <li class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Colombian Pour Over</div>
+                            <div class="item-description">Smooth and balanced with citrus and caramel notes</div>
+                        </div>
+                        <div class="item-price">$5.25</div>
+                    </li>
+                    <li class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Cuban Cortadito</div>
+                            <div class="item-description">Sweetened espresso with steamed milk, Cuban style</div>
+                        </div>
+                        <div class="item-price">$4.95</div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Australian Essence -->
+            <div class="category-card">
+                <h3 class="category-title">Australian Essence</h3>
+                <ul class="menu-items">
+                    <li class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Flat White</div>
+                            <div class="item-description">Velvety microfoam over a double ristretto shot</div>
+                        </div>
+                        <div class="item-price">$5.50</div>
+                    </li>
+                    <li class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Long Black</div>
+                            <div class="item-description">Double espresso over hot water, preserving crema</div>
+                        </div>
+                        <div class="item-price">$4.75</div>
+                    </li>
+                    <li class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Magic Coffee</div>
+                            <div class="item-description">Double ristretto in a 5oz cup with textured milk</div>
+                        </div>
+                        <div class="item-price">$5.25</div>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Asian Classics -->
+            <div class="category-card">
+                <h3 class="category-title">Asian Classics</h3>
+                <ul class="menu-items">
+                    <li class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Vietnamese Iced Coffee</div>
+                            <div class="item-description">Strong dark roast with sweetened condensed milk</div>
+                        </div>
+                        <div class="item-price">$5.95</div>
+                    </li>
+                    <li class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Japanese Siphon</div>
+                            <div class="item-description">Clean and delicate brew using vacuum siphon method</div>
+                        </div>
+                        <div class="item-price">$6.50</div>
+                    </li>
+                    <li class="menu-item">
+                        <div class="item-info">
+                            <div class="item-name">Thai Iced Tea Coffee</div>
+                            <div class="item-description">Unique blend of coffee with traditional Thai tea flavors</div>
+                        </div>
+                        <div class="item-price">$5.75</div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <p class="menu-note">All our coffees are made with single-origin beans ethically sourced from sustainable farms.</p>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <!-- Quick Links -->
+            <div class="footer-column">
+                <h4 class="footer-title">Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="menu.html">Menu</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#reservation">Reservation</a></li>
+                </ul>
+            </div>
+
+            <!-- Utility Pages -->
+            <div class="footer-column">
+                <h4 class="footer-title">Utility Pages</h4>
+                <ul class="footer-links">
+                    <li><a href="#blog">Blog</a></li>
+                    <li><a href="#terms">Terms & Conditions</a></li>
+                    <li><a href="#privacy">Privacy Policy</a></li>
+                </ul>
+            </div>
+
+            <!-- Newsletter -->
+            <div class="footer-column">
+                <h4 class="footer-title">Newsletter</h4>
+                <p class="newsletter-text">
+                    Stay up-to-date on all we've you unforgettable flavors and moment, right to your inbox.
+                </p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Your email here" class="newsletter-input">
+                    <button type="submit" class="newsletter-btn">→</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Footer Bottom -->
+        <div class="footer-bottom">
+            <div class="footer-left">
+                <p class="footer-copyright">Copyright, are reserved @ SAVORIA</p>
+                <div class="footer-social">
+                    <a href="#" class="social-icon" aria-label="Twitter">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon" aria-label="Facebook">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon" aria-label="YouTube">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M22.54 6.42a2.78 2.78 0 00-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 00-1.94 2A29 29 0 001 11.75a29 29 0 00.46 5.33A2.78 2.78 0 003.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 001.94-2 29 29 0 00.46-5.25 29 29 0 00-.46-5.33z"/>
+                            <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon" aria-label="LinkedIn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/>
+                            <circle cx="4" cy="4" r="2"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon" aria-label="GitHub">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            <p class="footer-designed">Designed by <a href="#">Mr.Snd @Fromly design</a></p>
+        </div>
+    </footer>
+
+    <script>
+        // Fixed navigation on scroll
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>

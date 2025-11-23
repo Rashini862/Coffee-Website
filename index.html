@@ -1,0 +1,1686 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SAVORIA - Artisan Coffee</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Georgia', serif;
+            background-color: #1a1a1a;
+            color: #fff;
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 3rem;
+            background-color: #0d0d0d;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            background-color: rgba(13, 13, 13, 0.95);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            padding: 1rem 3rem;
+        }
+
+        /* Add padding to body to account for fixed nav */
+        body {
+            padding-top: 80px;
+        }
+
+        .logo {
+            font-family: 'Didot', 'Bodoni MT', serif;
+            font-size: 1.5rem;
+            letter-spacing: 3px;
+            color: #d4af7a;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active {
+            color: #d4af7a;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+        }
+
+        .nav-icons button {
+            background: none;
+            border: none;
+            color: #fff;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .login-btn {
+            background-color: #d4af7a;
+            color: #000;
+            padding: 0.5rem 1.5rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .login-btn:hover {
+            background-color: #c49a5f;
+        }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4rem 3rem;
+            min-height: 80vh;
+        }
+
+        .hero-content {
+            flex: 1;
+            max-width: 550px;
+        }
+
+        .hero-content h1 {
+            font-size: 4rem;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            color: #d4af7a;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+
+        .hero-content p {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #b8b8b8;
+            margin-bottom: 2.5rem;
+            max-width: 450px;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .btn {
+            padding: 1rem 2.5rem;
+            border-radius: 30px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            transition: all 0.4s ease;
+            text-decoration: none;
+            font-weight: 600;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #d4af7a 0%, #c49a5f 100%);
+            color: #000;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #c49a5f 0%, #b38a4f 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(212, 175, 122, 0.4);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: #fff;
+            border: 2px solid #d4af7a;
+        }
+
+        .btn-secondary:hover {
+            background-color: rgba(212, 175, 122, 0.15);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(212, 175, 122, 0.3);
+            border-color: #c49a5f;
+        }
+
+        .arrow {
+            font-size: 1.2rem;
+            transition: transform 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn:hover .arrow {
+            transform: translateX(5px);
+        }
+
+        /* Hero Image */
+        .hero-image {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .coffee-image {
+            width: 450px;
+            height: 450px;
+            border: 2px solid #d4af7a;
+            border-radius: 20px;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            animation: float 3s ease-in-out infinite;
+            box-shadow: 0 20px 60px rgba(212, 175, 122, 0.3);
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .coffee-cup {
+            width: 200px;
+            height: 150px;
+            background: linear-gradient(135deg, #3d3d3d 0%, #2a2a2a 100%);
+            border-radius: 0 0 80px 80px;
+            position: relative;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        }
+
+        .cup-handle {
+            position: absolute;
+            right: -40px;
+            top: 20px;
+            width: 50px;
+            height: 70px;
+            border: 3px solid #4d4d4d;
+            border-left: none;
+            border-radius: 0 50% 50% 0;
+        }
+
+        .coffee-beans {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 5px;
+        }
+
+        .bean {
+            width: 15px;
+            height: 20px;
+            background-color: #8B4513;
+            border-radius: 50%;
+        }
+
+        .steam {
+            position: absolute;
+            top: -100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 120px;
+        }
+
+        .steam-path {
+            stroke: #6d6d6d;
+            stroke-width: 3;
+            fill: none;
+            opacity: 0.5;
+            animation: steam 4s ease-in-out infinite;
+        }
+
+        .steam-path:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        .steam-path:nth-child(3) {
+            animation-delay: 1s;
+        }
+
+        @keyframes steam {
+            0%, 100% {
+                opacity: 0.5;
+                transform: translateY(0);
+            }
+            50% {
+                opacity: 0.8;
+                transform: translateY(-10px);
+            }
+        }
+
+        /* Marquee */
+        .marquee {
+            background-color: #d4af7a;
+            padding: 1rem 0;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .marquee-content {
+            display: inline-block;
+            animation: scroll 20s linear infinite;
+        }
+
+        .marquee-item {
+            display: inline-block;
+            padding: 0 3rem;
+            font-family: 'Brush Script MT', cursive;
+            font-size: 1.5rem;
+            color: #1a1a1a;
+        }
+
+        .star {
+            color: #000;
+            margin: 0 0.5rem;
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Our Menu Section */
+        .menu-section {
+            padding: 6rem 3rem;
+            background-color: #1a1a1a;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-line {
+            width: 60px;
+            height: 2px;
+            background-color: #d4af7a;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            color: #d4af7a;
+            font-weight: 300;
+            letter-spacing: 1px;
+        }
+
+        .section-description {
+            color: #b8b8b8;
+            margin-bottom: 3rem;
+            max-width: 600px;
+            line-height: 1.6;
+        }
+
+        .menu-content {
+            display: flex;
+            gap: 3rem;
+            align-items: flex-start;
+            position: relative;
+        }
+
+        .menu-content::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: linear-gradient(to bottom, transparent, #d4af7a 20%, #d4af7a 80%, transparent);
+            transform: translateX(-50%);
+        }
+
+        .menu-list {
+            flex: 1;
+        }
+
+        .menu-item {
+            margin-bottom: 2.5rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid #333;
+        }
+
+        .menu-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .menu-item h3 {
+            color: #fff;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .menu-item p {
+            color: #888;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .menu-images {
+            flex: 1;
+            position: relative;
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .menu-image-wrapper {
+            position: relative;
+        }
+
+        .menu-image-wrapper.float-1 {
+            animation: floatImage1 4s ease-in-out infinite;
+        }
+
+        .menu-image-wrapper.float-2 {
+            animation: floatImage2 4.5s ease-in-out infinite;
+            animation-delay: 0.5s;
+        }
+
+        @keyframes floatImage1 {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-25px);
+            }
+        }
+
+        @keyframes floatImage2 {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .menu-img {
+            width: 100%;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        }
+
+        .menu-img-large {
+            width: 300px;
+            height: 350px;
+            object-fit: cover;
+        }
+
+        .menu-img-small {
+            width: 250px;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .menu-explore-btn {
+            margin-top: 2rem;
+        }
+
+        /* Signature Dishes Section */
+        .signature-section {
+            padding: 6rem 0;
+            background-color: #1a1a1a;
+            overflow: hidden;
+        }
+
+        .signature-header {
+            padding: 0 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .signature-description {
+            color: #b8b8b8;
+            line-height: 1.6;
+        }
+
+        .dishes-slider {
+            position: relative;
+            overflow: hidden;
+            padding: 2rem 0;
+            background: linear-gradient(90deg, 
+                rgba(13, 13, 13, 0) 0%,
+                rgba(13, 13, 13, 0.3) 5%,
+                rgba(26, 26, 26, 0.8) 10%,
+                rgba(26, 26, 26, 1) 15%,
+                rgba(26, 26, 26, 1) 85%,
+                rgba(26, 26, 26, 0.8) 90%,
+                rgba(13, 13, 13, 0.3) 95%,
+                rgba(13, 13, 13, 0) 100%
+            );
+            border-top: 2px solid #333;
+            border-bottom: 2px solid #333;
+        }
+
+        .dishes-slider::before,
+        .dishes-slider::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 150px;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        .dishes-slider::before {
+            left: 0;
+            background: linear-gradient(to right, #1a1a1a, transparent);
+            border-left: 2px solid #333;
+        }
+
+        .dishes-slider::after {
+            right: 0;
+            background: linear-gradient(to left, #1a1a1a, transparent);
+            border-right: 2px solid #333;
+        }
+
+        .dishes-track {
+            display: flex;
+            gap: 2rem;
+            animation: slideLeft 30s linear infinite;
+        }
+
+        .dishes-track:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes slideLeft {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        .dish-card {
+            min-width: 300px;
+            border: 2px solid #333;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+            background-color: #1a1a1a;
+        }
+
+        .dish-card:hover {
+            transform: translateY(-10px);
+            border-color: #d4af7a;
+            box-shadow: 0 15px 40px rgba(212, 175, 122, 0.3);
+        }
+
+        .dish-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .dish-info {
+            padding: 1.5rem;
+            text-align: center;
+        }
+
+        .dish-name {
+            color: #d4af7a;
+            font-size: 1.1rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        /* The Ambiance Section */
+        .ambiance-section {
+            padding: 6rem 3rem;
+            background-color: #0d0d0d;
+        }
+
+        .ambiance-description {
+            color: #b8b8b8;
+            margin-bottom: 4rem;
+            max-width: 600px;
+            line-height: 1.6;
+        }
+
+        .ambiance-gallery {
+            position: relative;
+            height: 500px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: visible;
+        }
+
+        .gallery-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .ambiance-img {
+            position: absolute;
+            border-radius: 10px;
+            object-fit: cover;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+            transition: transform 0.3s ease;
+        }
+
+        .ambiance-img:hover {
+            transform: scale(1.05) !important;
+            z-index: 10;
+        }
+
+        /* Individual image positioning and animations */
+        .img-1 {
+            width: 220px;
+            height: 280px;
+            left: 5%;
+            top: 20%;
+            animation: float1 4s ease-in-out infinite;
+            z-index: 3;
+        }
+
+        .img-2 {
+            width: 180px;
+            height: 240px;
+            left: 20%;
+            bottom: 15%;
+            animation: float2 4.5s ease-in-out infinite;
+            animation-delay: 0.5s;
+            z-index: 2;
+        }
+
+        .img-3 {
+            width: 280px;
+            height: 320px;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            animation: float3 5s ease-in-out infinite;
+            animation-delay: 1s;
+            z-index: 5;
+        }
+
+        .img-4 {
+            width: 200px;
+            height: 260px;
+            right: 20%;
+            top: 25%;
+            animation: float4 4.2s ease-in-out infinite;
+            animation-delay: 0.8s;
+            z-index: 4;
+        }
+
+        .img-5 {
+            width: 240px;
+            height: 200px;
+            right: 5%;
+            bottom: 20%;
+            animation: float5 4.8s ease-in-out infinite;
+            animation-delay: 1.2s;
+            z-index: 1;
+        }
+
+        @keyframes float1 {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        @keyframes float2 {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-15px);
+            }
+        }
+
+        @keyframes float3 {
+            0%, 100% {
+                transform: translate(-50%, -50%) translateY(0px);
+            }
+            50% {
+                transform: translate(-50%, -50%) translateY(-25px);
+            }
+        }
+
+        @keyframes float4 {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-18px);
+            }
+        }
+
+        @keyframes float5 {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-22px);
+            }
+        }
+
+        /* About Us Section */
+        .about-section {
+            padding: 6rem 3rem;
+            background-color: #1a1a1a;
+        }
+
+        .about-content {
+            display: flex;
+            gap: 4rem;
+            align-items: center;
+            margin-top: 3rem;
+        }
+
+        .about-image-wrapper {
+            flex: 1;
+            position: relative;
+        }
+
+        .about-main-image {
+            width: 100%;
+            max-width: 500px;
+            height: 400px;
+            object-fit: cover;
+            border-radius: 15px;
+            border: 3px solid #d4af7a;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .about-text {
+            flex: 1;
+        }
+
+        .about-badge {
+            display: inline-block;
+            color: #d4af7a;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: 1px;
+        }
+
+        .about-title {
+            font-size: 2.5rem;
+            color: #fff;
+            line-height: 1.3;
+            margin-bottom: 1.5rem;
+            font-weight: 300;
+        }
+
+        .about-description {
+            color: #b8b8b8;
+            line-height: 1.8;
+            margin-bottom: 2.5rem;
+        }
+
+        .about-explore-btn {
+            display: inline-flex;
+        }
+
+        .about-features {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin-top: 4rem;
+            padding-top: 3rem;
+            border-top: 1px solid #333;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 1.5rem 1rem;
+            background-color: rgba(212, 175, 122, 0.05);
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            border: 1px solid #333;
+        }
+
+        .feature-card:hover {
+            background-color: rgba(212, 175, 122, 0.1);
+            transform: translateY(-5px);
+            border-color: #d4af7a;
+        }
+
+        .feature-icon {
+            width: 40px;
+            height: 40px;
+            margin: 0 auto 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #d4af7a 0%, #c49a5f 100%);
+            border-radius: 50%;
+            color: #000;
+            font-size: 1.2rem;
+        }
+
+        .feature-title {
+            color: #fff;
+            font-size: 1rem;
+            margin-bottom: 0.6rem;
+            font-weight: 500;
+        }
+
+        .feature-description {
+            color: #888;
+            font-size: 0.8rem;
+            line-height: 1.4;
+        }
+
+        /* Dining Testimonials Section */
+        .testimonials-section {
+            padding: 6rem 3rem;
+            background-color: #0d0d0d;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .testimonial-card {
+            background-color: #1a1a1a;
+            border: 1px solid #333;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-10px);
+            border-color: #d4af7a;
+            box-shadow: 0 15px 40px rgba(212, 175, 122, 0.2);
+        }
+
+        .testimonial-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .testimonial-content {
+            padding: 2rem;
+        }
+
+        .testimonial-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .testimonial-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid #d4af7a;
+        }
+
+        .testimonial-author {
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 500;
+        }
+
+        .testimonial-stars {
+            color: #d4af7a;
+            font-size: 0.9rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .testimonial-title {
+            color: #fff;
+            font-size: 1.3rem;
+            margin-bottom: 0.8rem;
+            font-weight: 400;
+            line-height: 1.3;
+        }
+
+        .testimonial-text {
+            color: #888;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* News & Articles Section */
+        .news-section {
+            padding: 6rem 3rem;
+            background-color: #1a1a1a;
+        }
+
+        .news-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .news-card {
+            background-color: #0d0d0d;
+            border: 1px solid #333;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .news-card:hover {
+            transform: translateY(-10px);
+            border-color: #d4af7a;
+            box-shadow: 0 15px 40px rgba(212, 175, 122, 0.2);
+        }
+
+        .news-image {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+        }
+
+        .news-content {
+            padding: 2rem;
+        }
+
+        .news-title {
+            color: #fff;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            font-weight: 400;
+            line-height: 1.4;
+        }
+
+        .news-date {
+            color: #d4af7a;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Reserve Section */
+        .reserve-section {
+            padding: 6rem 3rem;
+            background-color: #0d0d0d;
+        }
+
+        .reserve-content {
+            display: flex;
+            gap: 4rem;
+            align-items: center;
+            margin-top: 3rem;
+        }
+
+        .reserve-text {
+            flex: 1;
+        }
+
+        .reserve-title {
+            color: #fff;
+            font-size: 2.5rem;
+            line-height: 1.3;
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .reserve-details {
+            display: flex;
+            gap: 3rem;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .reserve-details::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background-color: #333;
+            transform: translateX(-50%);
+        }
+
+        .reserve-info {
+            flex: 1;
+            padding-bottom: 1.5rem;
+        }
+
+        .reserve-label {
+            color: #888;
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid #333;
+        }
+
+        .reserve-value {
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .reserve-note {
+            color: #888;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #333;
+        }
+
+        .reserve-btn-wrapper {
+            display: inline-flex;
+        }
+
+        .reserve-image-wrapper {
+            flex: 1;
+        }
+
+        .reserve-image {
+            width: 100%;
+            height: 450px;
+            object-fit: cover;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        /* Footer Section */
+        footer {
+            background-color: #000;
+            padding: 4rem 3rem 2rem;
+            border-top: 1px solid #222;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            gap: 4rem;
+            margin-bottom: 3rem;
+            padding-bottom: 3rem;
+            border-bottom: 1px solid #222;
+        }
+
+        .footer-column {
+            flex: 1;
+        }
+
+        .footer-title {
+            color: #d4af7a;
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 1rem;
+        }
+
+        .footer-links a {
+            color: #888;
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: #d4af7a;
+        }
+
+        .newsletter-text {
+            color: #888;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .newsletter-form {
+            display: flex;
+            gap: 0;
+        }
+
+        .newsletter-input {
+            flex: 1;
+            padding: 0.9rem 1.2rem;
+            background-color: transparent;
+            border: 1px solid #333;
+            border-radius: 5px 0 0 5px;
+            color: #fff;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .newsletter-input:focus {
+            border-color: #d4af7a;
+        }
+
+        .newsletter-input::placeholder {
+            color: #555;
+        }
+
+        .newsletter-btn {
+            padding: 0.9rem 1.5rem;
+            background-color: #d4af7a;
+            border: 1px solid #d4af7a;
+            border-radius: 0 5px 5px 0;
+            color: #000;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .newsletter-btn:hover {
+            background-color: #c49a5f;
+            border-color: #c49a5f;
+        }
+
+        .footer-bottom {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #666;
+            font-size: 0.85rem;
+        }
+
+        .footer-left {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .social-icon {
+            color: #666;
+            font-size: 1.2rem;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .social-icon:hover {
+            color: #d4af7a;
+        }
+
+        .footer-copyright {
+            color: #666;
+        }
+
+        .footer-designed {
+            color: #666;
+        }
+
+        .footer-designed a {
+            color: #d4af7a;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-designed a:hover {
+            color: #c49a5f;
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .cta-buttons {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="logo">SAVORIA</div>
+        <ul class="nav-links">
+            <li><a href="index.html" class="active">Home</a></li>
+            <li><a href="menu.html">Menu</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#blog">Blog</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="nav-icons">
+            <button>🔍</button>
+            <button>🛒</button>
+            <button class="login-btn">Log in/Sign up</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>The Epitome of Artisan Coffee A Perfection</h1>
+            <p>Experience the art of brewing as a daily ritual, where meticulously sourced beans are prepared with care to create your perfect, harmonious escape.</p>
+            <div class="cta-buttons">
+                <button class="btn btn-primary">
+                    Book A Table
+                    <span class="arrow">→</span>
+                </button>
+                <button class="btn btn-secondary">
+                    Explore Menu
+                    <span class="arrow">→</span>
+                </button>
+            </div>
+        </div>
+        <div class="hero-image">
+            <div class="coffee-image">
+                <svg class="steam" viewBox="0 0 80 120">
+                    <path class="steam-path" d="M 20 120 Q 15 80, 20 40 Q 25 20, 20 0"/>
+                    <path class="steam-path" d="M 40 120 Q 35 80, 40 40 Q 45 20, 40 0"/>
+                    <path class="steam-path" d="M 60 120 Q 55 80, 60 40 Q 65 20, 60 0"/>
+                </svg>
+                <div class="coffee-cup">
+                    <div class="cup-handle"></div>
+                </div>
+                <div class="coffee-beans">
+                    <div class="bean"></div>
+                    <div class="bean"></div>
+                    <div class="bean"></div>
+                    <div class="bean"></div>
+                    <div class="bean"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Marquee -->
+    <div class="marquee">
+        <div class="marquee-content">
+            <span class="star">★</span><span class="marquee-item">Coffeeco</span>
+            <span class="star">★</span><span class="marquee-item">Coffeeco</span>
+            <span class="star">★</span><span class="marquee-item">Coffeeco</span>
+            <span class="star">★</span><span class="marquee-item">Coffeeco</span>
+            <span class="star">★</span><span class="marquee-item">Coffeeco</span>
+            <span class="star">★</span><span class="marquee-item">Coffeeco</span>
+            <span class="star">★</span><span class="marquee-item">Coffeeco</span>
+            <span class="star">★</span><span class="marquee-item">Coffeeco</span>
+        </div>
+    </div>
+
+    <!-- Our Menu Section -->
+    <section class="menu-section">
+        <div class="section-header">
+            <div class="section-line"></div>
+            <h2 class="section-title">Our Menu</h2>
+        </div>
+        <p class="section-description">
+            Where every cup tells a story, crafted with care, steeped in heritage, and designed to leave a lasting impression.
+        </p>
+        
+        <div class="menu-content">
+            <div class="menu-list">
+                <div class="menu-item">
+                    <h3>European Heritage</h3>
+                    <p>Inspired by the timeless coffee traditions of Europe, where brewing is an art, passed down through generations, these flavors reflect old-world charm and sensation.</p>
+                </div>
+                
+                <div class="menu-item">
+                    <h3>Legacy Of Latin</h3>
+                    <p>Bold and full of character, each cup celebrates the rich flavors and vibrant coffee culture of Latin America.</p>
+                </div>
+                
+                <div class="menu-item">
+                    <h3>Australian Essence</h3>
+                    <p>Inspired by Australia's modern café culture, these smooth and balanced brews capture innovation, creativity, and a laid-back lifestyle.</p>
+                </div>
+                
+                <div class="menu-item">
+                    <h3>Asian Classics</h3>
+                    <p>Inspired by centuries of diverse coffee traditions across Asia, each cup blends rich flavors and unique techniques into a memorable experience.</p>
+                </div>
+                
+                <a href="menu.html" class="btn btn-secondary menu-explore-btn">
+                    Explore Menu
+                    <span class="arrow">→</span>
+                </a>
+            </div>
+            
+            <div class="menu-images">
+                <div class="menu-image-wrapper float-1">
+                    <img src="https://images.unsplash.com/photo-1511920170033-f8396924c348?w=400&h=500&fit=crop" alt="Espresso pour" class="menu-img menu-img-large">
+                </div>
+                <div class="menu-image-wrapper float-2">
+                    <img src="https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?w=350&h=350&fit=crop" alt="Coffee beans" class="menu-img menu-img-small">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Signature Dishes Section -->
+    <section class="signature-section">
+        <div class="signature-header">
+            <div class="section-header">
+                <div class="section-line"></div>
+                <h2 class="section-title">Signature Dishes</h2>
+            </div>
+            <p class="signature-description">
+                Savor every sip of our signature coffees, crafted with passion and the finest beans.
+            </p>
+        </div>
+        
+        <div class="dishes-slider">
+            <div class="dishes-track">
+                <!-- First set of dishes -->
+                <div class="dish-card">
+                    <img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400&h=300&fit=crop" alt="Grand Cru Elegance" class="dish-image">
+                    <div class="dish-info">
+                        <p class="dish-name">Grand Cru Elegance</p>
+                    </div>
+                </div>
+                
+                <div class="dish-card">
+                    <img src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=400&h=300&fit=crop" alt="Passion Soufflé Étoile" class="dish-image">
+                    <div class="dish-info">
+                        <p class="dish-name">Passion Soufflé Étoile</p>
+                    </div>
+                </div>
+                
+                <div class="dish-card">
+                    <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop" alt="Osso Buco Ambrosia" class="dish-image">
+                    <div class="dish-info">
+                        <p class="dish-name">Osso Buco Ambrosia</p>
+                    </div>
+                </div>
+                
+                <div class="dish-card">
+                    <img src="https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=400&h=300&fit=crop" alt="Wagyu Tataki Umami" class="dish-image">
+                    <div class="dish-info">
+                        <p class="dish-name">Wagyu Tataki Umami</p>
+                    </div>
+                </div>
+                
+                <!-- Duplicate set for seamless loop -->
+                <div class="dish-card">
+                    <img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=400&h=300&fit=crop" alt="Grand Cru Elegance" class="dish-image">
+                    <div class="dish-info">
+                        <p class="dish-name">Grand Cru Elegance</p>
+                    </div>
+                </div>
+                
+                <div class="dish-card">
+                    <img src="https://images.unsplash.com/photo-1563379091339-03b21ab4a4f8?w=400&h=300&fit=crop" alt="Passion Soufflé Étoile" class="dish-image">
+                    <div class="dish-info">
+                        <p class="dish-name">Passion Soufflé Étoile</p>
+                    </div>
+                </div>
+                
+                <div class="dish-card">
+                    <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&h=300&fit=crop" alt="Osso Buco Ambrosia" class="dish-image">
+                    <div class="dish-info">
+                        <p class="dish-name">Osso Buco Ambrosia</p>
+                    </div>
+                </div>
+                
+                <div class="dish-card">
+                    <img src="https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=400&h=300&fit=crop" alt="Wagyu Tataki Umami" class="dish-image">
+                    <div class="dish-info">
+                        <p class="dish-name">Wagyu Tataki Umami</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- The Ambiance Section -->
+    <section class="ambiance-section">
+        <div class="section-header">
+            <div class="section-line"></div>
+            <h2 class="section-title">The Ambiance</h2>
+        </div>
+        <p class="ambiance-description">
+            Where gilded whispers and candlelight compose an evening of warmth, elegance, and quiet allure.
+        </p>
+        
+        <div class="ambiance-gallery">
+            <div class="gallery-container">
+                <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=300&h=400&fit=crop" alt="Restaurant interior" class="ambiance-img img-1">
+                <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=250&h=350&fit=crop" alt="Dining table" class="ambiance-img img-2">
+                <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=400&h=450&fit=crop" alt="Ocean dining" class="ambiance-img img-3">
+                <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9?w=280&h=370&fit=crop" alt="Fine dining" class="ambiance-img img-4">
+                <img src="https://images.unsplash.com/photo-1578474846511-04ba529f0b88?w=350&h=300&fit=crop" alt="Restaurant ambiance" class="ambiance-img img-5">
+            </div>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section class="about-section">
+        <div class="section-header">
+            <div class="section-line"></div>
+            <h2 class="section-title">About Us</h2>
+        </div>
+        <p class="section-description">
+            Discover the story behind our passion for refined cuisine & exquisite ambiance.
+        </p>
+        
+        <div class="about-content">
+            <div class="about-image-wrapper">
+                <img src="https://images.unsplash.com/photo-1559329007-40df8a9345d8?w=600&h=500&fit=crop" alt="Restaurant exterior at night" class="about-main-image">
+            </div>
+            
+            <div class="about-text">
+                <span class="about-badge">Michelin Star, 2025</span>
+                <h3 class="about-title">Explore Our Story For Refined Cuisine And Timeless Ambiance</h3>
+                <p class="about-description">
+                    "Our story is one of growth, exploration, and unforgettable culinary memories — where every chapter is served with elegance."
+                </p>
+                <a href="#about" class="btn btn-secondary about-explore-btn">
+                    Explore Our Story
+                    <span class="arrow">→</span>
+                </a>
+            </div>
+        </div>
+        
+        <div class="about-features">
+            <div class="feature-card">
+                <div class="feature-icon">🏛️</div>
+                <h4 class="feature-title">Timeless Heritage</h4>
+                <p class="feature-description">Savoring flavors that blend tradition, inspiration and culture</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">⭐</div>
+                <h4 class="feature-title">World-Class Dishes</h4>
+                <p class="feature-description">Signature & 28 classic dishes flavors, are available</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">💎</div>
+                <h4 class="feature-title">Emotions & Elegance</h4>
+                <p class="feature-description">Exquisite elegance in the timeless charm of fine meals</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🏆</div>
+                <h4 class="feature-title">Unmatched Experience</h4>
+                <p class="feature-description">Masterclass service from a dedication host</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dining Testimonials Section -->
+    <section class="testimonials-section">
+        <div class="section-header">
+            <div class="section-line"></div>
+            <h2 class="section-title">Dining Testimonials</h2>
+        </div>
+        <p class="section-description">
+            Discover the cherished memories & testimonials of passionate, delighted every visit becomes a highlight.
+        </p>
+        
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <img src="https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&h=400&fit=crop" alt="Memorable feast" class="testimonial-image">
+                <div class="testimonial-content">
+                    <div class="testimonial-header">
+                        <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&h=100&fit=crop" alt="John D" class="testimonial-avatar">
+                        <span class="testimonial-author">John D.</span>
+                    </div>
+                    <div class="testimonial-stars">★★★★★</div>
+                    <h3 class="testimonial-title">A Memorable Feast For The Senses</h3>
+                    <p class="testimonial-text">"A dinner that defied all my senses. The plating was visually stunning, the taste of every dish was a delicately crafted symphony."</p>
+                </div>
+            </div>
+            
+            <div class="testimonial-card">
+                <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&h=400&fit=crop" alt="Luxury experience" class="testimonial-image">
+                <div class="testimonial-content">
+                    <div class="testimonial-header">
+                        <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&h=100&fit=crop" alt="Sarah Brown" class="testimonial-avatar">
+                        <span class="testimonial-author">Sarah Brown</span>
+                    </div>
+                    <div class="testimonial-stars">★★★★★</div>
+                    <h3 class="testimonial-title">An Opulent And Luxury Experience</h3>
+                    <p class="testimonial-text">"From the moment we arrived, the experience was pure luxury, from beautiful plate the plating to beautiful plating."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- News & Articles Section -->
+    <section class="news-section">
+        <div class="section-header">
+            <div class="section-line"></div>
+            <h2 class="section-title">News & Articles</h2>
+        </div>
+        <p class="section-description">
+            Discover the culinary excellence behind Elixir, expert tips & news posted amazing.
+        </p>
+        
+        <div class="news-grid">
+            <div class="news-card">
+                <img src="https://images.unsplash.com/photo-1506377247377-2a5b3b417ebb?w=600&h=400&fit=crop" alt="Wine collection" class="news-image">
+                <div class="news-content">
+                    <p class="news-date">May 12, 2024</p>
+                    <h3 class="news-title">Rare, Fine Wine: Inside Our Exclusive Collection Of Wine</h3>
+                </div>
+            </div>
+            
+            <div class="news-card">
+                <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=600&h=400&fit=crop" alt="Seafood dining" class="news-image">
+                <div class="news-content">
+                    <p class="news-date">May 8, 2024</p>
+                    <h3 class="news-title">Beneath The Surface A Deep Dive Into Seafood Experience</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Reserve Your Experience Section -->
+    <section class="reserve-section">
+        <div class="section-header">
+            <div class="section-line"></div>
+            <h2 class="section-title">Reserve Your Experience</h2>
+        </div>
+        <p class="section-description">
+            Elixir, where gourmet meets reserve, A fine dining surprise of fine wine & unforgettable meals.
+        </p>
+        
+        <div class="reserve-content">
+            <div class="reserve-text">
+                <h3 class="reserve-title">An Evening Of Exquisite Taste, Quiet Luxury</h3>
+                
+                <div class="reserve-details">
+                    <div class="reserve-info">
+                        <p class="reserve-label">Monday to Friday</p>
+                        <p class="reserve-value">9:00AM - 10:00PM</p>
+                    </div>
+                    <div class="reserve-info">
+                        <p class="reserve-label">Saturday and Sunday</p>
+                        <p class="reserve-value">9:00AM - 12:00PM</p>
+                    </div>
+                </div>
+                
+                <div class="reserve-info">
+                    <p class="reserve-label">Address</p>
+                    <p class="reserve-value">Mr. Johnathan Reed Rosew Maplewood Lane</p>
+                </div>
+                
+                <p class="reserve-note">For unforgettable feast decline Masterclass wine list.</p>
+                
+                <div class="reserve-btn-wrapper">
+                    <button class="btn btn-primary">
+                        Make A Reservation
+                        <span class="arrow">→</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="reserve-image-wrapper">
+                <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=700&h=600&fit=crop" alt="Restaurant interior" class="reserve-image">
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <!-- Quick Links -->
+            <div class="footer-column">
+                <h4 class="footer-title">Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="menu.html">Menu</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#reservation">Reservation</a></li>
+                </ul>
+            </div>
+
+            <!-- Utility Pages -->
+            <div class="footer-column">
+                <h4 class="footer-title">Utility Pages</h4>
+                <ul class="footer-links">
+                    <li><a href="#blog">Blog</a></li>
+                    <li><a href="#terms">Terms & Conditions</a></li>
+                    <li><a href="#privacy">Privacy Policy</a></li>
+                </ul>
+            </div>
+
+            <!-- Newsletter -->
+            <div class="footer-column">
+                <h4 class="footer-title">Newsletter</h4>
+                <p class="newsletter-text">
+                    Stay up-to-date on all we've you unforgettable flavors and moment, right to your inbox.
+                </p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Your email here" class="newsletter-input">
+                    <button type="submit" class="newsletter-btn">→</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Footer Bottom -->
+        <div class="footer-bottom">
+            <div class="footer-left">
+                <p class="footer-copyright">Copyright, are reserved @ SAVORIA</p>
+                <div class="footer-social">
+                    <a href="#" class="social-icon" aria-label="Twitter">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon" aria-label="Facebook">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon" aria-label="YouTube">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M22.54 6.42a2.78 2.78 0 00-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 00-1.94 2A29 29 0 001 11.75a29 29 0 00.46 5.33A2.78 2.78 0 003.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 001.94-2 29 29 0 00.46-5.25 29 29 0 00-.46-5.33z"/>
+                            <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon" aria-label="LinkedIn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z"/>
+                            <circle cx="4" cy="4" r="2"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon" aria-label="GitHub">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+            <p class="footer-designed">Designed by <a href="#">Mr.Snd @Fromly design</a></p>
+        </div>
+    </footer>
+
+    <script>
+        // Fixed navigation on scroll
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>
